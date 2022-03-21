@@ -4,6 +4,18 @@
   box-sizing: border-box;
 }
 
+html,
 body {
+  height: 100vh;
+  min-height: 100vh;
+}
+
+body {
+  display: grid;
+  place-content: center;
   margin: 0;
+}
+
+canvas#life {
+  border: 1px solid black;
 }
