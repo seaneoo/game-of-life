@@ -1,7 +1,7 @@
 class GameOfLife {
   _PIXEL_SIZE = 16;
-  _WIDTH = 32; // 16x16 pixel cells, 512 pixels
-  _HEIGHT = 24; // 16x16 pixel cells, 384 pixels
+  _WIDTH = 64; // 16x16 pixel cells, 1024 pixels
+  _HEIGHT = 48; // 16x16 pixel cells, 768 pixels
   canvas: HTMLCanvasElement;
   ctx: CanvasRenderingContext2D | null;
   cells: number[][] = [[]];
@@ -42,10 +42,10 @@ class GameOfLife {
     })();
   }
 
-  drawCell(x: number, y: number, color: string) {
+  drawCell(x: number, y: number, alive: boolean = false) {
     if (this.ctx !== null) {
       this.ctx.beginPath();
-      this.ctx.fillStyle = `#${color}`;
+      this.ctx.fillStyle = !alive ? "#ffffff" : "#000000";
       this.ctx.fillRect(
         x * this._PIXEL_SIZE,
         y * this._PIXEL_SIZE,
@@ -64,11 +64,7 @@ class GameOfLife {
         const dX = this.cells[x];
         for (let y = 0; y < dX.length; ++y) {
           const dY = dX[y];
-          this.drawCell(
-            dX[0],
-            dY,
-            Math.floor(Math.random() * 16777215).toString(16)
-          );
+          this.drawCell(dX[0], dY, Math.random() < 5 / 100);
         }
       }
     }
