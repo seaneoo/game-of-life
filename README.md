@@ -9,9 +9,16 @@ The universe of the Game of Life is an infinite, two-dimensional orthogonal grid
 3. Any live cell with more than three live neighbours dies, as if by overpopulation.
 4. Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.
 
+For more information, visit [Conway's Game of Life](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life) on Wikipedia.
+
+## 🖥️ Tech
+
+This app was bootstrapped with [Vite](https://vitejs.dev/) and written in vanilla JavaScript through the use of TypeScript. No dependencies are present on the production build.
+
+For the actual app, the simulation is running in a vanilla [Canvas](https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API) element.
+
 ## 📃 License
 
-<small>
 This is free and unencumbered software released into the public domain.
 
 Anyone is free to copy, modify, publish, use, compile, sell, or
@@ -36,4 +43,3 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 
 For more information, please refer to <https://unlicense.org>
-</small>
