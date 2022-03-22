@@ -1,73 +1,74 @@
+import { Cell } from "./cell";
+import { _CHANCE, _HEIGHT, _PIXEL_SIZE, _WIDTH } from "./vars";
+
+/**
+ * Represents Conway's Game of Life.
+ * Contains all functions and variables needed for the game to function properly.
+ */
 class GameOfLife {
-  _PIXEL_SIZE = 16;
-  _WIDTH = 64; // 16x16 pixel cells, 1024 pixels
-  _HEIGHT = 48; // 16x16 pixel cells, 768 pixels
+  /**
+   * Instance of the HTML canvas element on the DOM.
+   * Pretty much only needed to access the rendering context.
+   */
   canvas: HTMLCanvasElement;
-  ctx: CanvasRenderingContext2D | null;
-  cells: number[][] = [[]];
+  /**
+   * The 2D rendering context for the HTML canvas.
+   * Handles everything having to do with drawing on the canvas.
+   */
+  ctx: CanvasRenderingContext2D;
+  /**
+   * An array of cells on the board.
+   * Represented by a {@link Cell} typing containing its position on the board and status.
+   */
+  cells: Cell[] = [];
 
   constructor() {
     this.canvas = document.querySelector<HTMLCanvasElement>("#life")!;
-    this.ctx = this.canvas.getContext("2d");
+    this.ctx = this.canvas.getContext("2d")!;
 
-    // Set some properties of the Canvas/2D Context
-    this.canvas.width = this._WIDTH * this._PIXEL_SIZE;
-    this.canvas.height = this._HEIGHT * this._PIXEL_SIZE;
-    this.canvas.style.width = `${this._WIDTH * this._PIXEL_SIZE}px`;
-    this.canvas.style.height = `${this._HEIGHT * this._PIXEL_SIZE}px`;
-
-    this.ctx!.imageSmoothingEnabled = true;
+    /**
+     * Set the width and height of the canvas.
+     * We use our global {@link _WIDTH} and {@link _HEIGHT} variables in conjunction with {@link _PIXEL_SIZE} to "scale" it properly.
+     * Multiply our desired number of cells (64x48) with the our desired cell size (16px) to get a canvas that is 1024x768.
+     */
+    this.canvas.width = _WIDTH * _PIXEL_SIZE;
+    this.canvas.height = _HEIGHT * _PIXEL_SIZE;
 
     this.init();
   }
 
   init() {
-    // Define a two-dimensional array
-    for (let x = 0; x < this._WIDTH; x++) {
-      for (let y = 0; y < this._HEIGHT; y++) {
-        this.cells.push([x, y]);
+    /**
+     * Populate a one-dimensional array with 'n' amount of {@link Cell} type objects.
+     * For example, with a width of 64 and a height of 48, there will be 3,072 cells.
+     */
+    for (let x = 0; x < _WIDTH; x++) {
+      for (let y = 0; y < _HEIGHT; y++) {
+        this.cells.push({
+          x,
+          y,
+          alive: Math.random() <= _CHANCE,
+        });
       }
     }
 
-    (() => {
-      // Initial draw
-      this.draw();
-      // Define an interval that draws on the canvas every 500 milliseconds (0.5 seconds)
-      setInterval(
-        ((self) => {
-          return () => self.draw();
-        })(this),
-        500
-      );
-    })();
+    // setInterval(
+    //   ((self) => {
+    //     return () => self.draw();
+    //   })(this),
+    //   500
+    // );
   }
 
-  drawCell(x: number, y: number, alive: boolean = false) {
-    if (this.ctx !== null) {
-      this.ctx.beginPath();
-      this.ctx.fillStyle = !alive ? "#ffffff" : "#000000";
-      this.ctx.fillRect(
-        x * this._PIXEL_SIZE,
-        y * this._PIXEL_SIZE,
-        this._PIXEL_SIZE,
-        this._PIXEL_SIZE
-      );
-      this.ctx.closePath();
-    }
+  /**
+   * Clear the canvas so it is ready for another frame to be drawn.
+   */
+  clearCanvas() {
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
   }
 
   draw() {
-    if (this.ctx !== null) {
-      this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
-      for (let x = 0; x < this.cells.length; ++x) {
-        const dX = this.cells[x];
-        for (let y = 0; y < dX.length; ++y) {
-          const dY = dX[y];
-          this.drawCell(dX[0], dY, Math.random() < 5 / 100);
-        }
-      }
-    }
+    this.clearCanvas();
   }
 }
 
