@@ -25,7 +25,7 @@ export type Cell = {
  * @param {CanvasRenderingContext2D} ctx
  * @param {Cell} cell
  */
-export function draw(ctx: CanvasRenderingContext2D, cell: Cell) {
+export function drawCell(ctx: CanvasRenderingContext2D, cell: Cell) {
   ctx.beginPath();
 
   /**
@@ -62,23 +62,27 @@ export function cellAt(x: number, y: number): Cell | undefined {
  * @param cell
  * @returns
  */
-export function neighbors(cell: Cell): Cell[] {
+export function neighbors(cell: Cell): (Cell | undefined)[] {
   return [
-    cellAt(cell.x + 1, cell.y)!,
-    cellAt(cell.x + 1, cell.y + 1)!,
-    cellAt(cell.x + 1, cell.y - 1)!,
-    cellAt(cell.x - 1, cell.y)!,
-    cellAt(cell.x - 1, cell.y + 1)!,
-    cellAt(cell.x - 1, cell.y - 1)!,
-    cellAt(cell.x, cell.y + 1)!,
-    cellAt(cell.x, cell.y - 1)!,
+    cellAt(cell.x + 1, cell.y),
+    cellAt(cell.x + 1, cell.y + 1),
+    cellAt(cell.x + 1, cell.y - 1),
+    cellAt(cell.x - 1, cell.y),
+    cellAt(cell.x - 1, cell.y + 1),
+    cellAt(cell.x - 1, cell.y - 1),
+    cellAt(cell.x, cell.y + 1),
+    cellAt(cell.x, cell.y - 1),
   ].filter((c) => {
-    return (
-      c.x >= 0 &&
-      c.x <= _WIDTH * _PIXEL_SIZE &&
-      c.y >= 0 &&
-      c.y <= _HEIGHT * _PIXEL_SIZE
-    );
+    if (c === undefined) {
+      return false;
+    } else {
+      return (
+        c.x >= 0 &&
+        c.x <= _WIDTH * _PIXEL_SIZE &&
+        c.y >= 0 &&
+        c.y <= _HEIGHT * _PIXEL_SIZE
+      );
+    }
   });
 }
 
@@ -87,15 +91,6 @@ export function neighbors(cell: Cell): Cell[] {
  * @param cell
  * @returns
  */
-export function aliveNeighbors(cell: Cell): Cell[] {
-  return neighbors(cell).filter((c) => c.alive);
-}
-
-/**
- * Returns an array of no more than eight {@link Cell} objects that are next to the specified cell and deemed "dead"
- * @param cell
- * @returns
- */
-export function deadNeighbors(cell: Cell): Cell[] {
-  return neighbors(cell).filter((c) => !c.alive);
+export function aliveNeighbors(cell: Cell): (Cell | undefined)[] {
+  return neighbors(cell).filter((c) => c!.alive);
 }

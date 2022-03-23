@@ -1,5 +1,5 @@
-import { Cell, draw } from "./cell";
-import { _CHANCE, _HEIGHT, _PIXEL_SIZE, _WIDTH } from "./vars";
+import { aliveNeighbors, Cell, drawCell } from "./cell";
+import { _CHANCE, _HEIGHT, _INTERVAL, _PIXEL_SIZE, _WIDTH } from "./vars";
 
 /**
  * Represents Conway's Game of Life.
@@ -52,14 +52,16 @@ class GameOfLife {
       }
     }
 
-    this.draw();
-
-    // setInterval(
-    //   ((self) => {
-    //     return () => self.draw();
-    //   })(this),
-    //   500
-    // );
+    /**
+     * Do an initial draw onto the canvas then set an interval to re-draw every {@link _INTERVAL} seconds.
+     */
+    this.tick(true);
+    setInterval(
+      ((self) => {
+        return () => self.tick();
+      })(this),
+      1000 * _INTERVAL
+    );
   }
 
   /**
@@ -74,7 +76,33 @@ class GameOfLife {
 
     for (let i = 0; i < GameOfLife.cells.length; i++) {
       const cell = GameOfLife.cells[i];
-      draw(this.ctx, cell);
+      drawCell(this.ctx, cell);
+    }
+  }
+
+  /**
+   *
+   */
+  tick(initial = false) {
+    // Draw a new frame
+    this.draw();
+
+    // Logic
+    if (!initial) {
+      for (let i = 0; i < GameOfLife.cells.length; i++) {
+        const cell = GameOfLife.cells[i];
+        const alive = aliveNeighbors(cell).length;
+
+        if (!cell.alive) {
+          if (alive === 3) {
+            GameOfLife.cells[i] = { x: cell.x, y: cell.y, alive: true };
+          }
+        } else {
+          if (alive < 2 || alive > 3) {
+            GameOfLife.cells[i] = { x: cell.x, y: cell.y, alive: false };
+          }
+        }
+      }
     }
   }
 }
