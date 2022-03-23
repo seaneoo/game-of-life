@@ -1,4 +1,11 @@
-import { Cell } from "./cell";
+import {
+  aliveNeighbors,
+  Cell,
+  cellAt,
+  deadNeighbors,
+  draw,
+  neighbors,
+} from "./cell";
 import { _CHANCE, _HEIGHT, _PIXEL_SIZE, _WIDTH } from "./vars";
 
 /**
@@ -44,13 +51,15 @@ class GameOfLife {
      */
     for (let x = 0; x < _WIDTH; x++) {
       for (let y = 0; y < _HEIGHT; y++) {
-        this.cells.push({
+        GameOfLife.cells.push({
           x,
           y,
           alive: Math.random() <= _CHANCE,
         });
       }
     }
+
+    this.draw();
 
     // setInterval(
     //   ((self) => {
@@ -69,6 +78,11 @@ class GameOfLife {
 
   draw() {
     this.clearCanvas();
+
+    for (let i = 0; i < GameOfLife.cells.length; i++) {
+      const cell = GameOfLife.cells[i];
+      draw(this.ctx, cell);
+    }
   }
 }
 
