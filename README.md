@@ -19,6 +19,10 @@ This app was bootstrapped with [Vite](https://vitejs.dev/) and written in vanill
 
 For the actual app, the simulation is running in a vanilla [Canvas](https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API) element.
 
+## 📷 Media
+
+https://user-images.githubusercontent.com/15949898/159622637-a416b1cb-cd18-4b37-98ab-d8b846a81646.mp4
+
 ## 📃 License
 
 This is free and unencumbered software released into the public domain.
