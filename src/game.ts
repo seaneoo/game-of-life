@@ -1,11 +1,4 @@
-import {
-  aliveNeighbors,
-  Cell,
-  cellAt,
-  deadNeighbors,
-  draw,
-  neighbors,
-} from "./cell";
+import { Cell, draw } from "./cell";
 import { _CHANCE, _HEIGHT, _PIXEL_SIZE, _WIDTH } from "./vars";
 
 /**
