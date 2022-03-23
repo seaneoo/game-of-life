@@ -55,7 +55,7 @@ class GameOfLife {
     /**
      * Do an initial draw onto the canvas then set an interval to re-draw every {@link _INTERVAL} seconds.
      */
-    this.tick(true);
+    this.tick();
     setInterval(
       ((self) => {
         return () => self.tick();
@@ -83,24 +83,22 @@ class GameOfLife {
   /**
    *
    */
-  tick(initial = false) {
+  tick() {
     // Draw a new frame
     this.draw();
 
     // Logic
-    if (!initial) {
-      for (let i = 0; i < GameOfLife.cells.length; i++) {
-        const cell = GameOfLife.cells[i];
-        const alive = aliveNeighbors(cell).length;
+    for (let i = 0; i < GameOfLife.cells.length; i++) {
+      const cell = GameOfLife.cells[i];
+      const alive = aliveNeighbors(cell).length;
 
-        if (!cell.alive) {
-          if (alive === 3) {
-            GameOfLife.cells[i] = { x: cell.x, y: cell.y, alive: true };
-          }
-        } else {
-          if (alive < 2 || alive > 3) {
-            GameOfLife.cells[i] = { x: cell.x, y: cell.y, alive: false };
-          }
+      if (!cell.alive) {
+        if (alive === 3) {
+          GameOfLife.cells[i] = { x: cell.x, y: cell.y, alive: true };
+        }
+      } else {
+        if (alive < 2 || alive > 3) {
+          GameOfLife.cells[i] = { x: cell.x, y: cell.y, alive: false };
         }
       }
     }
