@@ -20,7 +20,7 @@ class GameOfLife {
    * An array of cells on the board.
    * Represented by a {@link Cell} typing containing its position on the board and status.
    */
-  cells: Cell[] = [];
+  public static cells: Cell[] = [];
 
   constructor() {
     this.canvas = document.querySelector<HTMLCanvasElement>("#life")!;

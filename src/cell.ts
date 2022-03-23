@@ -1,3 +1,4 @@
+import GameOfLife from "./game";
 import {
   _COLOR_ALIVE,
   _COLOR_DEAD,
@@ -47,23 +48,31 @@ export function draw(ctx: CanvasRenderingContext2D, cell: Cell) {
 }
 
 /**
+ * Finds a Cell object at the specified coordinates.
+ * @param x
+ * @param y
+ * @returns
+ */
+export function cellAt(x: number, y: number): Cell | undefined {
+  return GameOfLife.cells.find((cell) => cell.x === x && cell.y === y);
+}
+
+/**
  * Returns an array of no more than eight {@link Cell} objects that are next to the cell provided.
  * @param cell
  * @returns
  */
 export function neighbors(cell: Cell): Cell[] {
-  // TODO Get cells next to our the cell provided in the parameters
-  /**
-   *   new Cell(this.ctx, this.x + 1, this.y),
-   * new Cell(this.ctx, this.x + 1, this.y + 1),
-   * new Cell(this.ctx, this.x + 1, this.y - 1),
-   * new Cell(this.ctx, this.x - 1, this.y),
-   * new Cell(this.ctx, this.x - 1, this.y + 1),
-   * new Cell(this.ctx, this.x - 1, this.y - 1),
-   * new Cell(this.ctx, this.x, this.y + 1),
-   * new Cell(this.ctx, this.x, this.y - 1),
-   */
-  return [{ x: 0, y: 0, alive: true }].filter((c) => {
+  return [
+    cellAt(cell.x + 1, cell.y)!,
+    cellAt(cell.x + 1, cell.y + 1)!,
+    cellAt(cell.x + 1, cell.y - 1)!,
+    cellAt(cell.x - 1, cell.y)!,
+    cellAt(cell.x - 1, cell.y + 1)!,
+    cellAt(cell.x - 1, cell.y - 1)!,
+    cellAt(cell.x, cell.y + 1)!,
+    cellAt(cell.x, cell.y - 1)!,
+  ].filter((c) => {
     return (
       c.x >= 0 &&
       c.x <= _WIDTH * _PIXEL_SIZE &&
@@ -73,10 +82,20 @@ export function neighbors(cell: Cell): Cell[] {
   });
 }
 
+/**
+ * Returns an array of no more than eight {@link Cell} objects that are next to the specified cell and deemed "alive"
+ * @param cell
+ * @returns
+ */
 export function aliveNeighbors(cell: Cell): Cell[] {
   return neighbors(cell).filter((c) => c.alive);
 }
 
+/**
+ * Returns an array of no more than eight {@link Cell} objects that are next to the specified cell and deemed "dead"
+ * @param cell
+ * @returns
+ */
 export function deadNeighbors(cell: Cell): Cell[] {
   return neighbors(cell).filter((c) => !c.alive);
 }
